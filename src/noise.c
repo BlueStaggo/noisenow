@@ -22,7 +22,7 @@ NoiseType get_noise_type_from_string(const char* string) {
   return 0;
 }
 
-void generate_noise(noise_settings settings, uint8_t* buffer, size_t size, Random* rand) {
+void generate_noise(NoiseSettings settings, uint8_t* buffer, size_t size, Random* rand) {
   for (int channel = 0; channel < settings.channels; channel++) {
     double b[7];
 

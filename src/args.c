@@ -1,19 +1,15 @@
-#include "args.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct args {
-  int paramc;
-  parsed_param parsed_params[];
-};
+#include "args.h"
 
-static void args_print_help(FILE* stream, const char* cmd, int paramc, const param* paramk) {
+static void args_print_help(FILE* stream, const char* cmd, int paramc, const Parameter* paramk) {
   fprintf(stream, "Help for %s:\n", cmd);
 
   for (int i = 0; i < paramc; i++) {
-    param param = paramk[i];
+    Parameter param = paramk[i];
 
     if (param.short_name) {
       fprintf(stream, "-%-5s", param.short_name);
@@ -35,14 +31,14 @@ static void args_print_help(FILE* stream, const char* cmd, int paramc, const par
   }
 }
 
-bool args_parse(int argc, const char* argv[], int paramc, const param* paramk, parsed_param* parsed_params) {
+bool args_parse(int argc, const char* argv[], int paramc, const Parameter* paramk, ParsedParameter* parsed_params) {
   if (argc < 1) {
     return false;
   }
 
   for (int p = 0; p < paramc; p++) {
-    param param = paramk[p];
-    mutable_param_value param_value = (mutable_param_value) param.default_value;
+    Parameter param = paramk[p];
+    MutableParameterValue param_value = (MutableParameterValue) param.default_value;
 
     for (int a = 1; a < argc; a++) {
       const char* arg = argv[a];
@@ -95,7 +91,7 @@ bool args_parse(int argc, const char* argv[], int paramc, const param* paramk, p
       break;
     }
 
-    parsed_param parsed_param = {
+    ParsedParameter parsed_param = {
       .param = param,
       .value = param_value.immutable
     };
@@ -103,8 +99,4 @@ bool args_parse(int argc, const char* argv[], int paramc, const param* paramk, p
   }
 
   return true;
-}
-
-void args_free(args* args) {
-  free(args);
 }

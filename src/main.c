@@ -23,19 +23,19 @@
 #define AL_ASSERT(message) do { if (check_al_error(message ": %u")) { exit(1); return 1; } } while (0)
 #define AL_TRY(func, params) do { func params ; AL_ASSERT(#func); } while (0)
 
-typedef struct settings {
-  noise_settings noise;
+typedef struct Settings {
+  NoiseSettings noise;
   int sample_rate;
   int time;
   bool loop;
-} settings;
+} Settings;
 
-static settings init_settings(int argc, const char* argv[]);
+static Settings init_settings(int argc, const char* argv[]);
 static bool check_al_error(const char* message);
 
 int main(int argc, const char* argv[]) {
   // Arguments
-  settings settings = init_settings(argc, argv);
+  Settings settings = init_settings(argc, argv);
 
   // Initialize device
   ALCdevice* device = alcOpenDevice(nullptr);
@@ -96,55 +96,55 @@ int main(int argc, const char* argv[]) {
   return 0;
 }
 
-static settings init_settings(int argc, const char* argv[]) {
-  param params[] = {
-    (param) {
+static Settings init_settings(int argc, const char* argv[]) {
+  Parameter params[] = {
+    (Parameter) {
       .name = "help",
       .short_name = "h",
       .description = "Print this help message.",
       .type = PARAM_HELP
     },
-    (param) {
+    (Parameter) {
       .name = "version",
       .description = "Print the version of Noise NOW!.",
       .type = PARAM_BOOL
     },
-    (param) {
+    (Parameter) {
       .name = "volume",
       .short_name = "v",
       .description = "The volume of the noise. Defaults to 1.",
       .default_value = { .as_double = 1.0 },
       .type = PARAM_DOUBLE
     },
-    (param) {
+    (Parameter) {
       .name = "type",
       .short_name = "n",
       .description = "The type of noise to use. Valid values are \"white\", \"pink\" and \"brown\". Defaults to \"white\".",
       .default_value = { .as_string = "white" },
       .type = PARAM_STRING
     },
-    (param) {
+    (Parameter) {
       .name = "mono",
       .short_name = "m",
       .description = "Use only one audio channel (mono) instead of two (stereo).",
       .default_value = { .as_bool = false },
       .type = PARAM_BOOL
     },
-    (param) {
+    (Parameter) {
       .name = "sample_rate",
       .short_name = "r",
       .description = "The amount of samples per seconds. Defaults to 44.1 kHz",
       .default_value = { .as_uint32 = 44100 },
       .type = PARAM_UINT32
     },
-    (param) {
+    (Parameter) {
       .name = "time",
       .short_name = "t",
       .description = "The amount of time in seconds to generate noise for. Note that regardless of the value given, the noise will loop. Defaults to 10 seconds.",
       .default_value = { .as_uint32 = 10 },
       .type = PARAM_UINT32
     },
-    (param) {
+    (Parameter) {
       .name = "no-loop",
       .description = "Disable looping.",
       .default_value = { .as_bool = true },
@@ -152,7 +152,7 @@ static settings init_settings(int argc, const char* argv[]) {
     },
   };
   int paramc = sizeof(params) / sizeof(params[0]);
-  parsed_param parsed_params[paramc];
+  ParsedParameter parsed_params[paramc];
 
   if (!args_parse(argc, argv, paramc, params, parsed_params)) {
     exit(1);
@@ -163,7 +163,7 @@ static settings init_settings(int argc, const char* argv[]) {
     exit(1);
   }
 
-  return (settings) {
+  return (Settings) {
     .noise.volume = parsed_params[2].value.as_double,
     .noise.type = get_noise_type_from_string(parsed_params[3].value.as_string),
     .noise.channels = parsed_params[4].value.as_bool ? 1 : 2,
