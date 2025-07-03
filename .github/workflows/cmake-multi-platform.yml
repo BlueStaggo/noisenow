@@ -51,7 +51,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get -y libopenal1
+        sudo apt-get -y install libopenal1
 
     - name: Install dependencies (Windows)
       if: runner.os == 'Windows'
