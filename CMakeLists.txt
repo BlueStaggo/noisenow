@@ -3,7 +3,7 @@ project(noisenow C)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED true)
 
-find_package(OpenAL)
+find_package(OpenAL REQUIRED)
 
 file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/**.c")
 
