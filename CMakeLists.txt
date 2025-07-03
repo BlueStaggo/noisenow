@@ -10,4 +10,3 @@ file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/s
 add_executable(noisenow)
 target_sources(noisenow PRIVATE ${PROJECT_SOURCES})
 target_link_libraries(noisenow PRIVATE OpenAL::OpenAL)
-install(TARGETS noisenow DESTINATION ${CMAKE_BINARY_DIR})
