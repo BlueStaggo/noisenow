@@ -26,7 +26,7 @@ void generate_noise(NoiseSettings settings, uint8_t* buffer, size_t size, Random
   for (int channel = 0; channel < settings.channels; channel++) {
     double b[7];
 
-    for (size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i < size / settings.channels; i++) {
       double amplitude = rand_next_double(rand) - 0.5;
       double white = amplitude;
 
@@ -64,7 +64,7 @@ void generate_noise(NoiseSettings settings, uint8_t* buffer, size_t size, Random
         amplitude = 1.0;
       }
 
-      buffer[i] = (uint8_t)(amplitude * 255.0);
+      buffer[i * settings.channels + channel] = (uint8_t)(amplitude * 255.0);
     }
   }
 }

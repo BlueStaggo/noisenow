@@ -159,7 +159,7 @@ static Settings init_settings(int argc, const char* argv[]) {
   }
 
   if (parsed_params[1].value.as_bool) {
-    printf("Noise NOW! Version 1.0.0 by BlueStaggo.\n");
+    printf("Noise NOW! Version 1.0.1 by BlueStaggo.\n");
     exit(1);
   }
 
